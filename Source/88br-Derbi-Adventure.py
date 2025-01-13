@@ -4,6 +4,7 @@ inval = input("sinulta puuttuu osia! a: improvisoi kotoa osia. b: ostat osat kau
 inval2 = input("a: 30pwk vai b: 21phbg")
 inval3 = input("a: voca 50/70 b: voca 80/90")
 inval4 = input("a: HPC kampiakseli b: vakio kampiakseli")
+inval5 = input("a: mvt dd b: vakio sähköt")
 if inval == a: dql = 0
 if inval == a: mon = 10
 if inval == b: dql = 1
