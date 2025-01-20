@@ -1,6 +1,6 @@
 # Tuo tarvittavat moduulit
 import time, random, os
-from gameResources import license_table # VSCodelle: #type: ignore
+from gameResources import license_table
 
 # Tyhjennä terminaali
 def clear_screen():
