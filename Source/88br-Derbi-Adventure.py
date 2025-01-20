@@ -1,3 +1,7 @@
+# Mitä lisätä seuraavaksi:
+# 1. Pelintallennussysteemi
+# 2. Lisää pelattavaa
+
 import time
 import random
 
@@ -11,20 +15,49 @@ def slow_print(text, delay=0.1):
 
 # Peli alkaa
 
-slow_print("Jos rakennat itsellesi 88br derbin ja kohdistat keulan suoraan keulakulmille peli.", 0.05)
-slow_print("Paina enter aloittaaksesi.", 0.05)
-input()
+peliAloitettu = False
+while peliAloitettu == False:
+    slow_print("\nJos rakennat itsellesi 88br derbin ja kohdistat keulan suoraan keulakulmille peli.", 0.05)
+    slow_print("1. Aloita uusi peli\n2. Lue lisenssitiedot\n\nSyötä numero: ", 0.05)
+    aloitusValinta = input()
+    if aloitusValinta == "1":
+        peliAloitettu = True
+    elif aloitusValinta == "2":
+        print("""
+88br-Derbi-Adventure --- A game referencing our insider joke.
+Copyright (C) 2025  aallon-pituus
 
-# Aloitus statsit
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along
+with this program; if not, write to the Free Software Foundation, Inc.,
+51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+              
+The full license is in the LICENSE file.
+Koko lisenssi on LICENSE tiedostossa.
+If you do not have the LICENSE file, get it from https://github.com/aallon-pituus/88br-Derbi-Adventure/blob/main/Licenses%26Copyright/LICENSE.
+Jos sinulla ei ole LICENSE tiedostoa, hanki se osoitteesta https://github.com/aallon-pituus/88br-Derbi-Adventure/blob/main/Licenses%26Copyright/LICENSE.
+              """)
+        input("Paina ENTER jatkaaksesi.")
+
+### Aloitusmuuttuja-arvot
 
 # HP
 hp = 12
 
 # Stamina
-sta = 20
+stamina = 20
 
 # Raha
-mon = 10
+money = 10
 
 # Tyyli (pari eventtiä, score)
 style = 0
@@ -54,10 +87,124 @@ shieldbreak = 0
 dodge = 0
 breaker2 = 0
 
+tinaGamesActive = True
+
+# Tulosta tilastot
+
+def printStats():
+    show1 = f"Raha: {money}"
+
+    lenght = len(show1) # Käytin erillistä muuttujaa, jotta tulevaisuudessa on helpompi päivittää printStats() funktiota.
+
+    border = "=" * lenght
+
+    print(f"\n{border}\n{show1}\n{border}\n")
+
+def tinagamesvictory():
+    global tcube, money
+
+    while True:
+        global tinaGamesActive
+        slow_print("Voit valita yhden palkinnon...", 0.05)
+        slow_print("A: Tinakuutio", 0.05)
+        slow_print("B: Rahallinen palkinto", 0.05)
+        tg_choice = input("\n")
+
+        if tg_choice.capitalize() == "A":
+            tcube = 1
+            tinaGamesActive = False
+            break
+        elif tg_choice.capitalize() == "B":
+            slow_print("[Mietit itseksesi] Onpa se köyhä, kun se ei voi antaa enempää kuin 111...", 0.05)
+            money = 111
+            tinaGamesActive = False
+            break
+        else:
+            slow_print("Yritä uudelleen.", 0.05)
+
+def tinagameschallenge():
+    while tinaGamesActive == True:
+        slow_print("[Ääni kaiuttimista] Tervetuloa Tina Gamesiin. Ensimmäinen haasteenne on väistellä luoteja.", 0.05)
+        slow_print("Vieressäsi on portaat.", 0.05)
+        slow_print("A: Kokeile väistellä luoteja.", 0.05)
+        slow_print("B: Juokse portaat ylös.", 0.05)
+        tg_choice = input("\n")
+
+        if tg_choice.capitalize() == "A":
+            slow_print("Olipa tyhmä idea. Kuolit.", 0.05)
+        elif tg_choice.capitalize() == "B":
+            slow_print("Portaat suojasivat sinua luodeilta", 0.05)
+            slow_print("Olet ainoa selviytyjä...", 0.05)
+            tinagamesvictory()
+
+def tinagameswin():
+    while True:           
+        slow_print("Päihitit molemmat pelaajat taisteluusa. Tina Gamesin johtaja on yllättynyt ja kutsui sinut yksityiskeskusteluun.", 0.05)
+        slow_print("Hyväksytkö pyynnon?", 0.05)
+        slow_print("Y: Hyväksyn", 0.05)
+        slow_print("N: En hyväksy", 0.05)
+        tg_choice = input("\n")
+
+        if tg_choice.capitalize() == "Y":
+            global style
+            slow_print("[Tina Gamesin johtaja] Hei siellä... Minulla on sinulle jotain spesiaalia...", 0.05)
+            slow_print("Sait fluffy hairin.", 0.05)
+            style += 111
+            break
+        elif tg_choice.capitalize() == "N":
+            tinagameschallenge()
+
+def tinagamesfight():
+    while tinaGamesActive == True:
+        slow_print("Huomaat vierelläsi tapahtuvan taistelun kahden pelaajan välillä.", 0.05)
+        slow_print("A: Osallistu taisteluun.", 0.05)
+        slow_print("B: Liiku muualle.", 0.05)
+
+        tg_choice = input("\n")
+
+        if tg_choice.capitalize() == "A":
+                    winChance = random.randint(1, 2)
+                    if winChance == 1:
+                        tinagameswin()
+                    else:
+                        slow_print("Kuolit taistelussa.", 0.05)
+                        input()
+                        exit()
+        elif tg_choice.capitalize() == "B":
+            tinagameschallenge()
+        else: 
+            slow_print("Yritä uudelleen.", 0.05)
+
+def tinagames():
+    # Määrittely
+    playerNumber = random.randint(1, 456)
+
+    while tinaGamesActive == True:
+
+        printStats()
+        slow_print("Osallistuit Tina Gamesiin.", 0.05)
+        slow_print(f"Pelaajanumerosi on {playerNumber}\n", 0.05)
+        slow_print("Heräät kerrossängyssä...", 0.05)
+        slow_print("A: Poistu sängystä.", 0.05)
+        slow_print("B: Jää nukkumaan.", 0.05)
+        tg_choice = input("\n")
+
+        if tg_choice.capitalize() == "A":
+            tinagamesfight()
+        elif tg_choice.capitalize() == "B":
+            slow_print("Voi ei! Päällesi putosi 1000kg painava osa kattoa.", 0.05)
+            input()
+            exit()
+        else:
+            slow_print("Yritä uudelleen.", 0.05)
+    
+
+
 def poliisit():
     global poliisi_run_roll, style
+    printStats()
     slow_print("Poliisi setä lähestyy sinua!", 0.05)
-    slow_print("A: aja pakoon", 0.05)
+    slow_print("A: Aja pakoon", 0.05)
     slow_print("B: Anna poliisille turpiin!", 0.05)
     
     while True:
@@ -77,7 +224,7 @@ def poliisit():
                 exit()
             
         elif poliisi_choice == "b":
-            slow_print("Poliisi sähköitti sinut!", 0.05)
+            slow_print("Poliisi lamaannutti sinut taserilla!", 0.05)
             slow_print("Hävisit pelin!", 0.05)
             input()
             exit()
@@ -86,7 +233,7 @@ def poliisit():
             slow_print("Tuo ei ole yksi vaihtoehdoista", 0.05)
 
 def event_trigger():
-    global mon, poliisi, polroll, style, speed, derbilaatu, random_event, roadman_choice
+    global money, poliisi, polroll, style, speed, derbilaatu, random_event, roadman_choice
     if poliisi > 0:
         polroll = (random.randint(0,12)) + poliisi
         if polroll > 10:
@@ -95,10 +242,10 @@ def event_trigger():
     elif poliisi < 1:
         random_event = (random.randint(0,4))
         if random_event == 1:
-            
-            slow_print("sinua lähestyy epäilyttävä diileri!", 0.05)
+            printStats()
+            slow_print("Sinua lähestyy epäilyttävä katumyyjä!", 0.05)
             slow_print("A: Uhkapelaa kaikki rahasi.", 0.05)
-            slow_print("B: Osta epäilyttävää jauhetta (2 rahaa).", 0.05)
+            slow_print("B: Osta epäilyttävää ainetta (2 rahaa).", 0.05)
             slow_print("C: Osta epäilyttävä ruisku (5 rahaa).", 0.05)
             slow_print("D: Osta tinalasit (8 rahaa).", 0.05)
             
@@ -106,22 +253,22 @@ def event_trigger():
                 
                 dealer_choice = input().lower()
                 
-                if dealer_choice == "a" and mon > 0:
+                if dealer_choice == "a" and money > 0:
                     gamble = random.randint(1, 100)
                     if gamble <= 30:  # 30% voittaa
-                        mon *= 2
-                        slow_print(f"Voitit! Nyt sinulla on {mon} rahaa.", 0.05)
+                        money *= 2
+                        slow_print(f"Voitit! Nyt sinulla on {money} rahaa.", 0.05)
                     else:
-                        mon = 0
+                        money = 0
                         slow_print("Hävisit kaikki rahasi!", 0.05)
                     break
-                elif dealer_choice == "b" and mon >= 2:
+                elif dealer_choice == "b" and money >= 2:
                     powder_effect = random.randint(-2, 2)
                     speed += powder_effect
                     slow_print(f"Tuntuu oudolta...", 0.05)
-                    mon -= 2
+                    money -= 2
                     break
-                elif dealer_choice == "c" and mon >= 5:
+                elif dealer_choice == "c" and money >= 5:
                     syringe_effect = random.randint(1, 100)
                     if syringe_effect <= 45:  # 45% kuolla
                         slow_print("Älkää käyttäkö huumeita! Kuolit!", 0.05)
@@ -129,31 +276,31 @@ def event_trigger():
                     else:
                         speed += 4
                         slow_print("Energiaa pumppaa valtavasti!", 0.05)
-                        mon -= 5
+                        money -= 5
                     break
-                elif dealer_choice == "d" and mon >= 8:
+                elif dealer_choice == "d" and money >= 8:
                     global tinalasit
                     tinalasit = 1
-                    mon -= 8
+                    money -= 8
                     break
                 else:
-                    slow_print("Sinulla ei ole tarpeeksi rahaa tai valinta ei ole validi. Yritä uudelleen.", 0.05)
+                    slow_print("Sinulla ei ole tarpeeksi rahaa tai valitsit jonkun muun kirjaimen/symbolin kuin A, B, C ja D. Yritä uudelleen.", 0.05)
         
         elif random_event == 2:
-            
-            slow_print("sinua lähestyy Roadman!", 0.05)
+            printStats()
+            slow_print("Sinua lähestyy roadman!", 0.05)
             slow_print("Roadman vetää taskustaan puukon!", 0.05)
             slow_print("Mitä teet?", 0.05)
             slow_print("A: Juokset pakoon.", 0.05)
-            slow_print("B: Hakkaa roadman", 0.05)
-            slow_print("C: uskottele että sinua ei kannata ryöstää koska sinulla on liian hyvä drip", 0.05)
+            slow_print("B: Hakkaa roadman.", 0.05)
+            slow_print("C: Uskottele, että sinua ei kannata ryöstää, koska sinulla on liian hyvä drip.", 0.05)
             
             while True:
                 
                 roadman_choice = input().lower()
                     
                 if roadman_choice == "b":
-                    slow_print("Sinut puukotettiin kuoliaaksi!", 0.05)
+                    slow_print("Sinut tapettiin!", 0.05)
                     slow_print("Hävisit pelin!", 0.05)
                     input()
                     exit()
@@ -175,14 +322,14 @@ def event_trigger():
                         style += 2
                         break
                     elif style < 2:
-                        slow_print("Roadman ei pidä sun dripistä", 0.05)
+                        slow_print("Roadman ei pidä sun dripistä.", 0.05)
                         slow_print("Hän puukottaa sinut! Hävisit pelin!", 0.05)
                         input()
                         exit()
         
         elif random_event == 3:
             
-            speed +=1
+            speed += 1
         
         elif random_event == 4 and derbilaatu < 5:
             slow_print("Derbisi hajosi!", 0.05)
@@ -191,67 +338,71 @@ def event_trigger():
             speed -= 3 
 
 def shop():
-    global mon, style, speed, derbilaatu, tinalasit, tcube
+    global money, style, speed, derbilaatu, tinalasit, tcube
     
     
     if tinalasit == 1:
+        printStats()
         slow_print("Sisällä R-kioskissa ei ole juuri mitään, paitsi vanha nainen.", 0.05)
         slow_print("Vanha nainen myy sinulle jotain erikoista.", 0.05)
         slow_print("A: Osta tinakuutio (5 rahaa).", 0.05)
+        slow_print("B: Poistu kaupasta.", 0.05)
         
         while True:
             shop_choice = input().lower()
             
-            if shop_choice == "a" and mon >= 5:
-                mon -= 5
+            if shop_choice == "a" and money >= 5:
+                money -= 5
                 tcube = 1  
                 slow_print("Ostit tinakuution. Se vaikuttaa tärkeältä...", 0.05)
                 break
-            elif shop_choice == "a" and mon < 5:
+            elif shop_choice == "a" and money < 5:
                 slow_print("Sinulla ei ole tarpeeksi rahaa.", 0.05)
+            elif shop_choice == "b":
+                break
             else:
                 slow_print("Tuo ei ollut yksi vaihtoehdoista. Yritä uudelleen.", 0.05)
         
     else:
-        
+        printStats()
         slow_print("Tervetuloa R-kioskille!", 0.05)
         slow_print("Mitä haluaisit ostaa?", 0.05)
         slow_print("A: Megaforce (2 rahaa)", 0.05)
         slow_print("B: Megaforce 6-pack (10 rahaa)", 0.05)
         slow_print("C: Prime (6 rahaa)", 0.05)
         slow_print("D: Sipsit (3 rahaa)", 0.05)
-        slow_print("E: nothing", 0.05)
+        slow_print("E: Ei mitään", 0.05)
         
         while True:
             shop_choice = input().lower()
             
-            if shop_choice == "a" and mon >= 2:
-                mon -= 2
+            if shop_choice == "a" and money >= 2:
+                money -= 2
                 speed += 1
                 slow_print("Ostit megiksen.", 0.05)
                 break
-            elif shop_choice == "b" and mon >= 10:
-                mon -= 10
+            elif shop_choice == "b" and money >= 10:
+                money -= 10
                 speed += 6
                 slow_print("Nyttt tuleee pärinät!!!!!!", 0.05)
                 break
-            elif shop_choice == "c" and mon >= 6:
-                mon -= 6
-                slow_print("Kuolit välittömästi", 0.05)
+            elif shop_choice == "c" and money >= 6:
+                money -= 6
+                slow_print("Kuolit välittömästi.", 0.05)
                 input()
                 exit()
-            elif shop_choice == "d" and mon >= 3:
-                mon -= 3
+            elif shop_choice == "d" and money >= 3:
+                money -= 3
                 style += 1
-                slow_print("Ostit sipsit", 0.05)
+                slow_print("Ostit sipsit.", 0.05)
                 break
-            elif shop_choice == "a" and mon < 2:
+            elif shop_choice == "a" and money < 2:
                 slow_print("Sinulla ei ole tarpeeksi rahaa.", 0.05)
-            elif shop_choice == "b" and mon < 10:
+            elif shop_choice == "b" and money < 10:
                 slow_print("Sinulla ei ole tarpeeksi rahaa.", 0.05)
-            elif shop_choice == "c" and mon < 6:
+            elif shop_choice == "c" and money < 6:
                 slow_print("Sinulla ei ole tarpeeksi rahaa.", 0.05)
-            elif shop_choice == "d" and mon < 3:
+            elif shop_choice == "d" and money < 3:
                 slow_print("Sinulla ei ole tarpeeksi rahaa.", 0.05)
             elif shop_choice == "e":
                 break
@@ -271,24 +422,20 @@ def ending():
     if tcube == 1:
         slow_print("Tina ei johda sähköä.", 0.05)
     
-    slow_print(f"score: {score}", 0.05)
+    slow_print(f"Pisteesi: {score}", 0.05)
     input()  
     exit()
 
-slow_print("Sinulla on 10 rahaa.", 0.05)
-
 # Osat
 def osat():
-    global mon
-    global style
-    global speed
-    global derbilaatu
+    global money, style, speed, derbilaatu
+    printStats()
     slow_print("Aloit rakentamaan derbiä, mutta sinulta puuttuu osia!", 0.05)
     slow_print("Mitä teet?", 0.05)
-    slow_print("A: Kompromisoit osia kotoa.", 0.05)
+    slow_print("A: Etsit osia kotoa.", 0.05)
     slow_print("B: Ostat uusia osia kaupasta. (5 rahaa)", 0.05)
     slow_print("C: Korjaat purukumilla.", 0.05)
-    slow_print("D: Ostat alibabasta. (2 rahaa)", 0.05)
+    slow_print("D: Ostat Alibabasta. (2 rahaa)", 0.05)
     
     while True:
         osat_choice = input().lower()
@@ -296,7 +443,7 @@ def osat():
         if osat_choice == "a":
             break
         elif osat_choice == "b":
-            mon -= 5
+            money -= 5
             speed += 1
             derbilaatu += 3
             break
@@ -306,7 +453,7 @@ def osat():
             derbilaatu -= 2
             break
         elif osat_choice == "d":
-            mon -= 2
+            money -= 2
             derbilaatu += random.randint(-3, 2)
             speed += random.randint(-2, 2)
             break
@@ -317,9 +464,10 @@ osat()
 
 # Viritys
 def viritys():
-    global mon, style, derbilaatu, speed, poliisi
+    global money, style, derbilaatu, speed, poliisi
+    printStats()
     slow_print("Pitäisikö nyt virittää mopoa...", 0.05)
-    slow_print("A: No ei vilivonkka vitussa!", 0.05)
+    slow_print("A: No ei todellakaan!", 0.05)
     slow_print("B: Hiukan vääntöä ja kääntöä, laillisesti. (2 rahaa)", 0.05)
     slow_print("C: Täydet virit päälle! Ei ne poliisit saa mua kiinni. (4 rahaa)", 0.05)
     
@@ -329,14 +477,14 @@ def viritys():
         if viritys_choice == "a":
             break
         elif viritys_choice == "b":
-            mon -= 2
+            money -= 2
             speed += 1
             break
         elif viritys_choice == "c":
             speed += 4
             style += 2
             derbilaatu -= 1
-            mon -= 4
+            money -= 4
             poliisi += 2
             break
         else:
@@ -346,7 +494,8 @@ viritys()
 
 # Pärinät
 def ääni():
-    global mon, style, derbilaatu, speed, poliisi
+    global money, style, derbilaatu, speed, poliisi
+    printStats()
     slow_print("Laitetaanko päristely päälle?", 0.05)
     slow_print("A: Turhaa semmoinen.", 0.05)
     slow_print("B: Äänenvaimennin irti ja pärinä kuuluu.", 0.05)
@@ -360,29 +509,28 @@ def ääni():
         elif ääni_choice == "b":
             style += 1
             break
-        elif ääni_choice == "c" and mon > 1:
+        elif ääni_choice == "c" and money > 1:
             poliisi += 1
             style += 3
-            mon -= 2
+            money -= 2
             break
-        elif ääni_choice == "c" and mon < 2:
+        elif ääni_choice == "c" and money < 2:
             slow_print("Sinulla ei ole tarpeeksi rahaa.", 0.05)
         else:
             slow_print("Tuo ei ollut yksi vaihtoehdoista. Yritä uudelleen.", 0.05)
 
 ääni()
 
-slow_print(f"Sinulla on nyt {mon} rahaa.", 0.05)
-
 # Köyhille pojille
 def rahapula():
-    global mon, style, speed, derbilaatu, poliisi
-    slow_print("Voi ei! Olet köyhempi kuin vietnamilainen lapsi tehtaassa!", 0.05)
+    global money, style, speed, derbilaatu, poliisi
+    slow_print("Voi ei! Olet köyhempi kuin tehdastyöläinen!", 0.05)
     slow_print("A: Aika mennä kerjäämään kadulle.", 0.05)
-    slow_print("B: Yritä vetää rahat viereisesi naisen taskusta hiljaa.", 0.05)
+    slow_print("B: Yritä vetää rahat viereisen ohikulkijan taskusta hiljaa.", 0.05)
     slow_print("C: Rahaa on ihan tarpeeksi.", 0.05)
-    slow_print("D: Ryöstä viereisesi nainen.", 0.05)
-    slow_print("E: Pölli vanhempien pankki-informaatio", 0.05)
+    slow_print("D: Ryöstä viereisesi ohikulkija.", 0.05)
+    slow_print("E: Pölli vanhempien pankkitiedot.", 0.05)
+    slow_print("F: Osallistu Tina Gamesiin.", 0.05)
     
     while True:
         raha_choice = input().lower()
@@ -396,7 +544,7 @@ def rahapula():
         
         elif raha_choice == "a":
             speed -= 1
-            mon += 1
+            money += 1
             style -= 1
             slow_print("Onnistuit keräämään yhden rahan.", 0.05)
             break
@@ -406,7 +554,7 @@ def rahapula():
                 taskuvaras_k()
                 break
             if raha_chance <= 50:
-                mon += 4
+                money += 4
                 slow_print("Sinä onnistuit! Sait 4 rahaa.", 0.05)
                 break
         elif raha_choice == "c":
@@ -419,45 +567,48 @@ def rahapula():
             if rahaonnistuminen > 8:
                 slow_print("Onnistuit!!! et jäänyt kiinni!", 0.05)
                 slow_print("Sait 15 rahaa!", 0.05)
-                mon += 15
+                money += 15
             elif rahaonnistuminen < 9:
                 slow_print("Jäit kiinni, hävisit pelin!", 0.05)
                 input()
                 exit()
                 break
+        elif raha_choice == "f":
+            tinagames()
+            break
         
         else:
             slow_print("Tuo ei ollut yksi vaihtoehdoista. Yritä uudelleen.", 0.05)
 
 # Taskuvaras
 def taskuvaras_k():
-    global mon, poliisi, style
+    global money, poliisi, style
     slow_print("Jäit kiinni! Mitä teet nyt?", 0.05)
     slow_print("A: Juokse", 0.05)
-    slow_print("B: Turpa kii vitun ämmä ja laita se saatanan imuri päälle!", 0.05)
+    slow_print("B: Kaksintaistelu!", 0.05)
     
     while True:
         fight_choice = input().lower()
         
         if fight_choice == "a":
-            slow_print("Nainen soittaa sinivuokoille!", 0.05)
+            slow_print("Ohikulkija soittaa poliisit!", 0.05)
             break
         elif fight_choice == "b":
-            slow_print("Anna turpiin sille vitun nartulle!", 0.05)
-            fightwoman()
+            slow_print("Tietoosi tulee, että ohikulkija ei arvosta keulakulmia.", 0.05)
+            fighthater()
             break
         else:
             slow_print("Tuo ei ollut yksi vaihtoehdoista. Yritä uudelleen.", 0.05)
             
-def fightwoman():
-    global hp, sta, mon, poliisi, style, dmod, atmod, hitmod, hitroll, hit, shieldbreak, damage, dmgroll, womai, woman_hp, woman_sta, dodge, woda, wohit, wdodge, breaker2
+def fighthater():
+    global hp, stamina, money, poliisi, style, dmod, atmod, hitmod, hitroll, hit, shieldbreak, damage, dmgroll, haterai, hater_hp, hater_sta, dodge, woda, wohit, wdodge, breaker2
     slow_print("--------Fight!!!--------", 0.1)
-    slow_print("-You-      -Woman-", 0.5)
+    slow_print("-You-      -Hater-", 0.05)
     slow_print("HP 12       HP 10", 0.05)
     slow_print("STA 20      STA 18", 0.05)
 
-    woman_hp = 10
-    woman_sta = 15
+    hater_hp = 10
+    hater_sta = 15
 
     while True:
 
@@ -469,18 +620,18 @@ def fightwoman():
         slow_print("Mitä teet?", 0.05)
         slow_print("1. Kick", 0.05)
         slow_print("2. Heavy punch", 0.05)
-        slow_print("3. punch", 0.05)
-        slow_print("4. block", 0.05)
-        slow_print("5. dodge", 0.05)
+        slow_print("3. Punch", 0.05)
+        slow_print("4. Block", 0.05)
+        slow_print("5. Dodge", 0.05)
 
         while True:
 
             while True:
 
-                attackwomoption = input().lower()
+                attackoption = input().lower()
 
-                if attackwomoption == "1" and sta > 3:
-                    sta -= 3
+                if attackoption == "1" and stamina > 3:
+                    stamina -= 3
                     hitroll = (random.randint(0, 12))
                     hit = hitroll + hitmod
                     dmgroll = (random.randint(0, 5))
@@ -488,49 +639,49 @@ def fightwoman():
                     shieldbreak = 2
                     break
 
-                elif attackwomoption == "2" and sta > 5:
-                    sta -= 5
+                elif attackoption == "2" and stamina > 5:
+                    stamina -= 5
                     hitroll = (random.randint(0, 12))
                     hit = hitroll + hitmod - 2
                     dmgroll = (random.randint(0, 7))
                     damage = dmgroll + dmod
                     break
 
-                elif attackwomoption == "3" and sta > 2:
-                    sta -= 2
+                elif attackoption == "3" and stamina > 2:
+                    stamina -= 2
                     hitroll = (random.randint(0, 12))
                     hit = hitroll + hitmod + 1
                     dmgroll = (random.randint(0, 5))
                     damage = dmgroll + dmod
                     break
 
-                elif attackwomoption == "4":
-                    sta += 1
+                elif attackoption == "4":
+                    stamina += 1
                     break
 
-                elif attackwomoption == "5" and sta > 2:
-                    sta -= 2
+                elif attackoption == "5" and stamina > 2:
+                    stamina -= 2
                     dmod = 5
                     break
 
                 else:
                     slow_print("Tuo ei ollut yksi vaihtoehdoista tai sinulla ei ole tarpeeksi staminaa. Yritä uudelleen.", 0.05)
 
-            womai = (random.randint(0, 4))
+            haterai = (random.randint(0, 4))
 
             # 1 = light bag attack 2 = heavy bag attack 3 = frantic block 4 = mace
 
-            if womai == 1:
-                woman_sta -= 2
+            if haterai == 1:
+                hater_sta -= 2
                 wohit = (random.randint(0, 12))
                 woda = (random.randint(0, 4))
 
-            elif womai == 2:
-                woman_sta -= 4
+            elif haterai == 2:
+                hater_sta -= 4
                 wohit = (random.randint(0, 12)) - 2
                 woda = (random.randint(0, 6))
 
-            if womai == 1 or 2 and attackwomoption == "1" or "2" or "3":
+            if haterai == 1 or 2 and attackoption == "1" or "2" or "3":
                 if hitroll > wohit:
                     wdodge = (random.randint(0, 10))
                     if wdodge < 9:
@@ -545,14 +696,14 @@ def fightwoman():
                     elif dodge > 8:
                         slow_print("Molemmat löi, mutta kumpikaan ei osunut!", 0.05)
 
-            elif womai == 1 or 2 and attackwomoption == "4":
+            elif haterai == 1 or 2 and attackoption == "4":
                 if wohit > 7:
                     gothit()
                 else:
-                    woman_sta -= 5
-                    if woman_sta < 1:
-                        woman_sta = 5
-                        slow_print("Naisen stamina loppui!", 0.05)
+                    hater_sta -= 5
+                    if hater_sta < 1:
+                        hater_sta = 5
+                        slow_print("Keulakulma-vihaajan stamina loppui!", 0.05)
                         slow_print("Saat iskeä uudelleen!", 0.05)
                         stadodw = (random.randint(0, 10))
                         if stadodw > 8:
@@ -560,31 +711,31 @@ def fightwoman():
                         elif stadodw < 9:
                             slow_print("Osuit!", 0.05)
                             stahit = (random.randint(0, 4))
-                            slow_print("Nainen menetti" + str(stahit) + " hp!", 0.05)
-                            woman_hp -= stahit
-                        if woman_hp < 1:
-                            slow_print("Nainen kuoli, voitit taistelun!!!", 0.05)
+                            slow_print("Keulakulma-vihaaja menetti" + str(stahit) + " hp!", 0.05)
+                            hater_hp -= stahit
+                        if hater_hp < 1:
+                            slow_print("Keulakulma-vihaaja kuoli, voitit taistelun!!!", 0.05)
                             loot()
 
-            elif womai == 1 or 2 and attackwomoption == "5":
+            elif haterai == 1 or 2 and attackoption == "5":
                 dodge = (random.randint(0, 10)) + dmod
                 if dodge < 9:
                     gothit()
                 elif dodge > 8:
-                    slow_print("Nainen ei osunut!", 0.05)
+                    slow_print("Keulakulma-vihaaja ei osunut!", 0.05)
 
-            elif womai == 3 and attackwomoption == "1" or "2" or "3":
+            elif haterai == 3 and attackoption == "1" or "2" or "3":
                 if hit + shieldbreak > 7:
                     slow_print("Sinä iskit torjunnan läpi!", 0.05)
                 else:
-                    sta -= 5
-                    if sta < 1:
-                        sta = 5
+                    stamina -= 5
+                    if stamina < 1:
+                        stamina = 5
                         slow_print("Sinulta loppui stamina!", 0.05)
-                        slow_print("Nainen lyö uudelleen!", 0.05)
+                        slow_print("Keulakulma-vihaaja lyö uudelleen!", 0.05)
                         stadod = random.randint(0, 10)
                         if stadod > 8:
-                            slow_print("Nainen ei osunut!", 0.05)
+                            slow_print("Keulakulma-vihaaja ei osunut!", 0.05)
                         elif stadod < 9:
                             slow_print("Sinuun osui!", 0.05)
                             stahitw = (random.randint(0, 4))
@@ -594,15 +745,15 @@ def fightwoman():
                                 input()
                                 exit()
 
-            elif womai == 3 and attackwomoption == "4":
+            elif haterai == 3 and attackoption == "4":
 
                 slow_print("Molemmat puolustaa itseään... mitään ei tapahdu!", 0.05)
 
-            elif womai == 3 and attackwomoption == "5":
+            elif haterai == 3 and attackoption == "5":
 
-                slow_print("Nainen puolustaa itseään... Mitään ei tapahdu!", 0.05)
+                slow_print("Keulakulma-vihaaja puolustaa itseään... Mitään ei tapahdu!", 0.05)
 
-            elif womai == 4 and attackwomoption == "1" or "2" or "3":
+            elif haterai == 4 and attackoption == "1" or "2" or "3":
 
                 wdodge = (random.randint(0, 10))
                 if wdodge < 9:
@@ -610,16 +761,16 @@ def fightwoman():
                 elif wdodge > 8:
                     getmaced()
 
-            elif womai == 4 and attackwomoption == "4":
+            elif haterai == 4 and attackoption == "4":
 
                 getmaced()
 
-            elif womai == 4 and attackwomoption == "5":
+            elif haterai == 4 and attackoption == "5":
 
                 getmaced()
             
             print("sinulla on "+str(hp)+" hp:tä!")
-            print("sinulla on "+str(sta)+" staminaa!")
+            print("sinulla on "+str(stamina)+" staminaa!")
             
             if breaker == 1:
                 break
@@ -627,18 +778,18 @@ def fightwoman():
             break
                
 def hit_success():
-    global woman_sta, woman_hp, stadodw, stahit
+    global hater_sta, hater_hp, stadodw, stahit
     slow_print("Osuit!", 0.05)
-    slow_print("Nainen menetti " + str(damage) + " hp!", 0.05)
-    slow_print("Nainen menetti " + str(damage) + " staminaa!", 0.05)
-    woman_hp -= damage
-    woman_sta -= damage
+    slow_print("Keulakulma-vihaaja menetti " + str(damage) + " hp!", 0.05)
+    slow_print("Keulakulma-vihaaja menetti " + str(damage) + " staminaa!", 0.05)
+    hater_hp -= damage
+    hater_sta -= damage
     dmod
     atmod
     hitmod = 0
-    if woman_sta < 1:
-        woman_sta = 5
-        slow_print("Naiselta loppui stamina!", 0.05)
+    if hater_sta < 1:
+        hater_sta = 5
+        slow_print("Keulakulma-vihaajalta loppui stamina!", 0.05)
         slow_print("Saat lyödä uudelleen!", 0.05)
         stadodw = (random.randint(0, 10))
         if stadodw > 8:
@@ -646,28 +797,28 @@ def hit_success():
         elif stadodw < 9:
             slow_print("Sinä osuit!", 0.05)
             stahit = (random.randint(0, 4))
-            slow_print("Nainen menetti " + str(stahit) + " hp!", 0.05)
-            woman_hp -= stahit
-    if woman_hp < 1:
-        slow_print("Se vitun äämä kuoli!!!!", 0.05)
+            slow_print("Keulakulma-vihaaja menetti " + str(stahit) + " hp!", 0.05)
+            hater_hp -= stahit
+    if hater_hp < 1:
+        slow_print("Se kuoli VIHDOINKIN!!!!", 0.05)
         loot()
 
 def gothit():
-    global hp, sta, stadod, stahitw
+    global hp, stamina, stadod, stahitw, dmod, atmod, hitmod
     slow_print("Sinuun osui!", 0.05)
     slow_print("Sinä menetit " + str(woda) + " hp!", 0.05)
     hp -= woda
-    sta -= woda
+    stamina -= woda
     dmod = 0
     atmod = 0
     hitmod = 0
-    if sta < 1:
-        sta = 5
+    if stamina < 1:
+        stamina = 5
         slow_print("Sinulta loppui stamina!", 0.05)
-        slow_print("Nainen lyö uudestaan!", 0.05)
+        slow_print("Keulakulma-vihaaja lyö uudestaan!", 0.05)
         stadod = random.randint(0, 10)
         if stadod > 8:
-            slow_print("Nainen ei osunut!", 0.05)
+            slow_print("Keulakulma-vihaaja ei osunut!", 0.05)
         elif stadod < 9:
             slow_print("Sinuun osui!", 0.05)
             stahitw = (random.randint(0, 4))
@@ -678,20 +829,20 @@ def gothit():
         exit()
 
 def getmaced():
-    global poliisi
-    slow_print("Nainen suihkutti sinua mace:lla!", 0.05)
-    slow_print("Nainen soitti poliisit!", 0.05)
-    slow_print("Nainen juoksi pakoon!")
+    global poliisi, breaker
+    slow_print("Keulakulma-vihaaja suihkutti sinua mace:lla!", 0.05)
+    slow_print("Keulakulma-vihaaja soitti poliisit!", 0.05)
+    slow_print("Keulakulma-vihaaja juoksi pakoon!")
     poliisi += 5
     breaker = 1
 
 def loot():
-    global breaker
+    global breaker, money
     slow_print("Sait 8 rahaa!")
-    mon += 8
+    money += 8
     breaker = 1
 
-if mon < 3: rahapula()
+if money < 3: rahapula()
 
 event_trigger()
 event_trigger()
