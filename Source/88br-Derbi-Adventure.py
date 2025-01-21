@@ -1,5 +1,5 @@
 # Tuo vaadittu skripti
-from gameResources import gamefunctions as game # VS Codelle: #type: ignore
+from gameResources import gamefunctions as game
 
 # Avaa päävalikko
 game.start()
