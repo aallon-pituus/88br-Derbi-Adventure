@@ -1,6 +1,6 @@
 # Tuo tarvittavat moduulit
 import time, random, os
-from gameResources import license_table
+from gameResources import string_table as tab
 
 # Tyhjennä terminaali
 def clear_screen():
@@ -18,39 +18,93 @@ def slow_print(text):
 
 # Pelin aloitus-funktio
 def start():
-    text_border = "+" + "=" * 84 + "+"
     while True:
         clear_screen()
-        print(f"\n{text_border}\n| Jos rakennat itsellesi 88br derbin ja kohdistat keulan suoraan keulakulmille peli. |\n{text_border}")
+        print(tab.logo())
         print("\n1. Aloita uusi peli\n2. Lue lisenssitiedot\n\nSyötä numero: ")
         aloitusValinta = input(">> ")
         if aloitusValinta == "1":
             break
         elif aloitusValinta == "2":
             clear_screen()
-            print(license_table.smaller())
+            print(tab.smaller())
         lisenssiValinta = input(">> ")
         if lisenssiValinta.lower() == "l":
             clear_screen()
-            print(license_table.full())
+            print(tab.full())
             input("\nPaina ENTER jatkaaksesi. Press ENTER to continue. ")
 
 # Aseta muuttujien arvo
 def setup():
-    global money, style, speed, derbilaatu, poliisi
+    global money, style, speed, derbilaatu, poliisi, hunger
     money = 10
     style = 0
     speed = 0
     derbilaatu = 0
     poliisi = 0
+    hunger = 0
 
 # Tulosta pelaajan edistyminen
 def stats_print():
-    global money, derbilaatu, style, speed
-    fmoney, fderbilaatu, fstyle, fspeed = f"Raha: {money}", f"Derbin laatu: {derbilaatu}", f"Tyylipisteet: {style}", f"Nopeus: {speed}"
-    highest = max(len(fmoney), len(fderbilaatu), len(fstyle), len(fspeed))
+    global money, derbilaatu, style, speed, hunger
+    fmoney, fderbilaatu, fstyle, fspeed, fhunger = f"Raha: {money}", f"Derbin laatu: {derbilaatu}", f"Tyylipisteet: {style}", f"Nopeus: {speed}", f"Nälkä: {hunger}"
+    highest = max(len(fmoney), len(fderbilaatu), len(fstyle), len(fspeed), len(fhunger))
     border = "=" * highest
-    print(f"\n{border}\n{fmoney}\n{fderbilaatu}\n{fstyle}\n{fspeed}\n{border}")
+    print(f"\n{border}\n{fmoney}\n{fderbilaatu}\n{fstyle}\n{fspeed}\n{fhunger}\n{border}")
+
+# Saavut peliin
+def place_bedroom():
+    clear_screen()
+    stats_print()
+    slow_print("\nHeräsit sängyssäsi ja nousit ylös. Haistat huoneesi Wunderbaumin raikastaman mintun hajuisen ilman.")
+    slow_print("A: Mene alakertaan")
+    slow_print("B: Mene työpöydän äärelle")
+    while True:
+        bedroom_choice = input("\n>> ").lower()
+
+        if bedroom_choice == "a":
+            slow_print("\nKävelit alakertaan.")
+            time.sleep(2)
+            break
+        elif bedroom_choice == "b":
+            slow_print("\nKävelit työpöytäsi luo ja istuit tuolille.")
+            time.sleep(2)
+            break
+        else:
+            slow_print("\nTuo ei ollut yksi vaihtoehdoista. Yritä uudelleen.")
+
+    return bedroom_choice
+
+# Menit alakertaan
+def place_downstairs():
+    clear_screen()
+    stats_print()
+    slow_print("\nNäet edessäsi keittiön, television ja oven takapihallesi.")  
+    slow_print("A: Mene keittiöön")  
+    slow_print("B: Mene television äärelle")
+    slow_print("C: Mene takapihalle") 
+    while True:
+        downstairs_choice = input("\n>> ").lower()
+
+        if downstairs_choice == "a":
+            slow_print("\nKävelet keittiöön.")
+            time.sleep(2)
+            break
+        elif downstairs_choice == "b":
+            slow_print("\nIstut sohvalle television edessä.")
+            time.sleep(2)
+            break
+        elif downstairs_choice == "c":
+            slow_print("\nKävelet takapihalle.")
+            time.sleep(2)
+            break
+        else:
+            slow_print("\nTuo ei ollut yksi vaihtoehdoista. Yritä uudelleen.")
+
+    return downstairs_choice
+
+def place_desk():
+    return # Ei vielä valmis
 
 # Derbin osien valinta
 def derbi_osat():
@@ -58,7 +112,6 @@ def derbi_osat():
     clear_screen()
     stats_print()
     slow_print("\nAloit rakentamaan derbiä, mutta sinulta puuttuu osia!")
-    slow_print("Mitä teet?")
     slow_print("A: Etsit osia kotoa.")
     slow_print("B: Ostat uusia osia kaupasta. (5 rahaa)")
     slow_print("C: Korjaat purukumilla.")
@@ -72,13 +125,15 @@ def derbi_osat():
             time.sleep(2)
             derbilaatu =+ 1
             break
-        elif osat_choice == "b":
+        elif osat_choice == "b" and money > 4:
             slow_print("\nLöysit kaupasta hyvänlaatuisia osia! Nopeutta niissä ei kuitenkaan ole mielinmäärin.")
             time.sleep(2)
             money -= 5
             speed += 1
             derbilaatu += 3
             break
+        elif osat_choice == "b" and money < 5:
+            slow_print("\nSinulla ei ole tarpeeksi rahaa.")
         elif osat_choice == "c":
             slow_print("\nMitä odotit tapahtuvan?")
             time.sleep(2)
@@ -86,13 +141,15 @@ def derbi_osat():
             style -= 2
             derbilaatu -= -1
             break
-        elif osat_choice == "d":
+        elif osat_choice == "d" and money > 1:
             slow_print('\n"Osta halvalla, säästä mahdollisesti myös laadusta."')
             time.sleep(2)
             money -= 2
             derbilaatu += random.randint(-1, 2)
             speed += random.randint(-1, 2)
             break
+        elif osat_choice == "d" and money < 2:
+            slow_print("\nSinulla ei ole tarpeeksi rahaa.")
         else:
             slow_print("\nTuo ei ollut yksi vaihtoehdoista. Yritä uudelleen.")
 
@@ -110,9 +167,9 @@ def derbi_viritys():
         viritys_choice = input("\n>> ").lower()
         
         if viritys_choice == "a":
-            slow_print("Ei kaikki uskalla!")
+            slow_print("\nEi kaikki uskalla!")
             break
-        elif viritys_choice == "b":
+        elif viritys_choice == "b" and money > 1:
             slow_print("\nNyt on virit!")
             time.sleep(2)
             money -= 2
@@ -120,7 +177,9 @@ def derbi_viritys():
             derbilaatu += 1
             poliisi += 1
             break
-        elif viritys_choice == "c":
+        elif viritys_choice == "b" and money < 2:
+            slow_print("\nSinulla ei ole tarpeeksi rahaa.")
+        elif viritys_choice == "c" and money > 3:
             slow_print("\nKatsot ympärillesi jännittyneenä. Toivot, että kukaan ei nähnyt virittelyjäsi...")
             time.sleep(2)
             speed += 4
@@ -129,5 +188,41 @@ def derbi_viritys():
             money -= 4
             poliisi += 2
             break
+        elif viritys_choice == "c" and money < 4:
+            slow_print("\nSinulla ei ole tarpeeksi rahaa.")
+        else:
+            slow_print("\nTuo ei ollut yksi vaihtoehdoista. Yritä uudelleen.")
+
+# Pärinät
+def derbi_ääni():
+    global money, style, derbilaatu, speed, poliisi
+    clear_screen()
+    stats_print()
+    slow_print("\nLaitetaanko päristely päälle?")
+    slow_print("A: Turhaa semmoinen.")
+    slow_print("B: Äänenvaimennin irti ja pärinä kuuluu.")
+    slow_print("C: Kyllä, ja kaiuttimet kaiken varaksi että kukaan ei saa unta! (2 rahaa)")
+    
+    while True:
+        ääni_choice = input("\n>> ").lower()
+        
+        if ääni_choice == "a":
+            slow_print("\nEi se kaikkien juttu ole!")
+            time.sleep(2)
+            break
+        elif ääni_choice == "b":
+            slow_print("\nNyt on pärinät!")
+            time.sleep(2)
+            style += 1
+            break
+        elif ääni_choice == "c" and money > 1:
+            slow_print("\nKaiuttimet...?")
+            time.sleep(2)
+            poliisi += 1
+            style += 3
+            money -= 2
+            break
+        elif ääni_choice == "c" and money < 2:
+            slow_print("\nSinulla ei ole tarpeeksi rahaa.")
         else:
             slow_print("\nTuo ei ollut yksi vaihtoehdoista. Yritä uudelleen.")
