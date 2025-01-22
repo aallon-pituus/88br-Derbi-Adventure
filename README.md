@@ -5,4 +5,3 @@ A game referencing our insider joke about the nonsensical WhatsApp message below
 
 # TODO
 - Add more gameplay
-- Merge rewritten code (development branch) with main branch
