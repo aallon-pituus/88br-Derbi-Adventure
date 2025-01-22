@@ -36,13 +36,14 @@ def start():
 
 # Aseta muuttujien arvo
 def setup():
-    global money, style, speed, derbilaatu, poliisi, hunger
+    global money, style, speed, derbilaatu, poliisi, hunger, in_bed
     money = 10
     style = 0
     speed = 0
     derbilaatu = 0
     poliisi = 0
     hunger = 0
+    in_bed = True
 
 # Tulosta pelaajan edistyminen
 def stats_print():
@@ -54,11 +55,17 @@ def stats_print():
 
 # Saavut peliin
 def place_bedroom():
+    global in_bed
+    if in_bed:
+        in_bed_str = "Heräsit sängyssäsi ja nousit ylös."
+    else:
+        in_bed_str = "Palasit sänkysi luokse."
     clear_screen()
     stats_print()
-    slow_print("\nHeräsit sängyssäsi ja nousit ylös. Haistat huoneesi Wunderbaumin raikastaman mintun hajuisen ilman.")
+    slow_print(f"\n{in_bed_str} Haistat huoneesi Wunderbaumin raikastaman mintun hajuisen ilman.")
     slow_print("A: Mene alakertaan")
     slow_print("B: Mene työpöydän äärelle")
+    in_bed = False
     while True:
         bedroom_choice = input("\n>> ").lower()
 
@@ -103,15 +110,81 @@ def place_downstairs():
 
     return downstairs_choice
 
+# Menit pöydän äärelle
 def place_desk():
-    return # Ei vielä valmis
+    clear_screen()
+    stats_print()
+    slow_print("\nNäet edessäsi tietokoneen.")
+    slow_print("A: Käynnistä tietokone")
+    slow_print("B: Poistu pöydän ääreltä")
+    while True:
+        desk_choice = input("\n>> ").lower()
+
+        if desk_choice == "a":
+            slow_print("\nKäynnistit tietokoneen...")
+            time.sleep(2)
+            break
+        elif desk_choice == "b":
+            break
+        else:
+            slow_print("\nTuo ei ollut yksi vaihtoehdoista. Yritä uudelleen.")
+
+    return desk_choice
+
+# Käynnistit tietokoneen
+def item_computer():
+    clear_screen()
+    stats_print()
+    slow_print('\nTietokoneesi näyttö tulee näkyviin. Näet "värikkään" taustakuvasi.')
+    slow_print("A: Avaa Chrome")
+    slow_print("B: Sammuta tietokone")
+    while True:
+        computer_choice = input("\n>> ").lower()
+
+        if computer_choice == "a":
+            slow_print("\nSovellus avautuu...")
+            time.sleep(2)
+            break
+        elif computer_choice == "b":
+            slow_print("\nSammutat tietokoneen...")
+            time.sleep(2)
+            break
+        else:
+            slow_print("\nTuo ei ollut yksi vaihtoehdoista. Yritä uudelleen.")
+
+    return computer_choice 
+
+# Avasit Chromen
+def app_chrome():
+    clear_screen()
+    stats_print()
+    slow_print("\nNettiselain käynnistyi. Näet edessäsi hakupalkin.")
+    slow_print("A: Katso kirjanmerkkisi")
+    slow_print("B: Mene incognito tilaan")
+    slow_print("C: Poistu Chromesta")
+    while True:
+        chrome_choice = input("\n>> ").lower()
+        if chrome_choice == "a":
+            slow_print("\nKirjanmerkkinäkymä avautuu...")
+            time.sleep(2)
+            break
+        elif chrome_choice == "b":
+            break
+        elif chrome_choice == "c":
+            slow_print("\nSuljet sovelluksen...")
+            time.sleep(2)
+            break
+        else:
+            slow_print("\nTuo ei ollut yksi vaihtoehdoista. Yritä uudelleen.")
+
+    return chrome_choice
 
 # Derbin osien valinta
 def derbi_osat():
     global money, style, speed, derbilaatu
     clear_screen()
     stats_print()
-    slow_print("\nAloit rakentamaan derbiä, mutta sinulta puuttuu osia!")
+    slow_print("\nNäet takapihallasi olevan derbin, mutta siitä puuttuu osia!")
     slow_print("A: Etsit osia kotoa.")
     slow_print("B: Ostat uusia osia kaupasta. (5 rahaa)")
     slow_print("C: Korjaat purukumilla.")
@@ -137,9 +210,9 @@ def derbi_osat():
         elif osat_choice == "c":
             slow_print("\nMitä odotit tapahtuvan?")
             time.sleep(2)
-            speed -= -1
+            speed -= 1
             style -= 2
-            derbilaatu -= -1
+            derbilaatu -= 1
             break
         elif osat_choice == "d" and money > 1:
             slow_print('\n"Osta halvalla, säästä mahdollisesti myös laadusta."')
