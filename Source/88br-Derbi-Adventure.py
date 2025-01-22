@@ -32,7 +32,9 @@ while True: # Makuuhuone loop
                                 game.slow_print("Hävisit pelin. Sinut huomattiin menemässä incognito-tilaan.")
                                 game.stats_print()
                                 exit()
-                            if choice_chrome == "c": # Jos sammutat tietokoneen
-                                break # Mene takaisin pöydän äärelle
+                            if choice_chrome == "c": # Jos suljet Chromen
+                                break # Sulje Chrome
+                    if choice_computer == "b": # Jos sammutat tietokoneen
+                        break # Sammuta tietokone
             if choice_desk == "b": # Jos valitset B pöydän luona
                 break # Mene takaisin makuuhuoneeseen
