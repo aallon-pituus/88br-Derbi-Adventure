@@ -102,7 +102,7 @@ def place_downstairs():
             time.sleep(2)
             break
         elif downstairs_choice == "c":
-            slow_print("\nKävelet takapihalle.")
+            slow_print("\nLaitat raksavaatteet päälle ja kävelet takapihalle.")
             time.sleep(2)
             break
         else:
