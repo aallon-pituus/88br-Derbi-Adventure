@@ -1,3 +1,27 @@
+def new():
+    return("""
+=====================
+MITÄ UUTTA LISÄTTIIN?
+=====================
+1. Discord lisättiin
+2. Keittiö
+3. Televisio
+4. Tor-selain lisättiin
+5. Nettisivut lisättiin
+6. Bugien korjauiksia
+           
+Näiden lisäksi muita lisäyksiä!
+           
+=========================
+KETKÄ TEKIVÄT PÄIVITYSTÄ?
+=========================
+aallon-pituus
+sipulipata
+YHGLeader
+           
+Löydät heidät samoilla nimillä GitHubista!
+          """)
+
 def lose():
     return(r"""
                                  )                    
