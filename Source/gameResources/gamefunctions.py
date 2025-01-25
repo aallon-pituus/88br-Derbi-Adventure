@@ -216,7 +216,7 @@ def place_kitchen():
 def item_refrigerator():
     global hunger, refrigerator_food
     clear_screen()
-    stats_print(
+    stats_print()
     if refrigerator_food:
         slow_print("\nJääkaapissa on Roiskeläppä-pizza ja Megaforce-energiajuoma.")
         slow_print("A: Syö pizza ja juo energiajuoma")
