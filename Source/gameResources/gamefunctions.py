@@ -216,9 +216,12 @@ def place_kitchen():
 def item_refrigerator():
     global hunger, refrigerator_food
     clear_screen()
-    stats_print()
-    slow_print("\nJääkaapissa on Roiskeläppä-pizza ja Megaforce-energiajuoma.")
-    slow_print("A: Syö pizza ja juo energiajuoma")
+    stats_print(
+    if refrigerator_food:
+        slow_print("\nJääkaapissa on Roiskeläppä-pizza ja Megaforce-energiajuoma.")
+        slow_print("A: Syö pizza ja juo energiajuoma")
+    elif refrigerator_food == False:
+        slow_print("\nJääkaapissa ei ole mitään.")
     slow_print("B: Sulje jääkaappi")
     while True:
         refrigerator_choice = input("\n>> ")
@@ -236,12 +239,12 @@ def item_refrigerator():
             hunger -= 5
             refrigerator_food = False
             break
-        if refrigerator_choice == "a" and refrigerator_food == False:
-            slow_print("\nJääkaapissa ei ole ruokaa...")
         if refrigerator_choice == "b":
             slow_print("\nSuljet jääkaapin...")
             time.sleep(2)
             break
+        else:
+            slow_print("\nTuo ei ollut yksi vaihtoehdoista. Yritä uudelleen.")
 
 #######################
 ## Osio 4: Tietokone ##
