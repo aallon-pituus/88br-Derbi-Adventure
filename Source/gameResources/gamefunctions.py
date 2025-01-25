@@ -1,6 +1,6 @@
 # Tuo tarvittavat moduulit
 import time, random, os
-from gameResources import string_table as tab #type: ignore
+from gameResources import string_table as tab
 
 ######################################
 ## Osio 1: Pelin alku ja valmistelu ##
