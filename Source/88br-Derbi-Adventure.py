@@ -1,5 +1,5 @@
 # Tuo vaadittu skripti
-from gameResources import gamefunctions as game
+from gameResources import gamefunctions as game #type: ignore
 
 # Avaa päävalikko
 game.start()
@@ -18,15 +18,22 @@ while True:  # Makuuhuone loop
                     choice_kitchen = game.place_kitchen()
                     if choice_kitchen == "a": # Jos avaat jääkaapin
                         game.item_refrigerator()
-                    if choice_kitchen == "b": # Jos oistut keittiöstä
+                    if choice_kitchen == "b": # Jos poistut keittiöstä
                         break # Poistut keittiöstä
             if choice_downstairs == "b": # Jos istut television äärelle
                 game.item_tv()
             if choice_downstairs == "c":  # Jos menet takapihalle
-                game.derbi_osat()  # Valitse osat
-                game.derbi_viritys()  # Viritä derbi
-                game.derbi_ääni()  # Pärinät
-            if choice_downstairs == "d": # Jos menet takaisin ylös
+                choice_derbi = game.derbi_osat()  # Valitse osat
+                if choice_derbi == "b": # Jos menet Motonettiin
+                    game.place_motonet() # Mene Motonettiin
+                if not choice_derbi == "c": # Jos et palaa takaisin sisälle
+                    game.derbi_viritys()  # Viritä derbi
+                    game.derbi_ääni()  # Pärinät
+            if choice_downstairs == "motonet" and game.check("motonetissä_käyty") == False: # Jos menet Motonettiin
+                game.place_motonet() # Mene Motonettiin
+            if choice_downstairs == "smarket": # Jos menet S-Markettiin
+                game.place_smarket()
+            if choice_downstairs == "e": # Jos menet takaisin ylös
                 break # Mene takaisin ylös
     if choice_bedroom == "b":  # Jos menet pöydän äärelle
         while True:  # Pöytä loop
