@@ -47,7 +47,7 @@ def start():
 
 # Aseta muuttujien arvo
 def setup():
-    global money, style, speed, derbilaatu, poliisi, hunger, in_bed, sanity, giffit, discord_ban, dark_web_access, kvk_ban, refrigerator_food
+    global money, style, speed, derbilaatu, poliisi, hunger, in_bed, sanity, giffit, discord_ban, dark_web_access, kvk_ban, refrigerator_food, alibaba_parts, knife
     money = 10
     style = 0
     speed = 0
@@ -61,6 +61,8 @@ def setup():
     dark_web_access = False
     kvk_ban = False
     refrigerator_food = True
+    alibaba_parts = False
+    knife = False
 
 def check(variable):
     global dark_web_access, kvk_ban, discord_ban
@@ -198,6 +200,7 @@ def place_kitchen():
     slow_print("\nOlet keittiössä. Näet edessäsi jääkaapin")
     slow_print("A: Avaa jääkaappi")
     slow_print("B: Poistu keittiöstä")
+    slow_print("C: Ota pöydältä veitsi")
     while True:
         kitchen_choice = input("\n>> ")
         if kitchen_choice == "a":
@@ -208,6 +211,12 @@ def place_kitchen():
             slow_print("\nPoistut keittiöstä...")
             time.sleep(2)
             break
+        elif kitchen_choice == "c":
+            slow_print("\Hmm...")
+            time.sleep(2)
+            knife = True
+            break
+        
         else:
             slow_print("\nTuo ei ollut yksi vaihtoehdoista. Yritä uudelleen.")
 
