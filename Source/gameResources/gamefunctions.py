@@ -646,8 +646,12 @@ def derbi_osat():
             slow_print("\nSaavuit motonettiin.")
             time.sleep(2)
             slow_print("\nValitse osat.")
-            slow_print("\n88BigRacing sylinteri 5 rahaa")
+            slow_print("\nA: 88BigRacing sylinteri 5 rahaa")
             moto_osat = input("\n>> ")
+            if moto_osat == "a":
+                slow_print("\nNyt vetää ku vammane vanukasta")
+                speed += 2
+                derbilaatu += 2
             break
         elif osat_choice == "b" and money < 5:
             slow_print("\nSinulla ei ole tarpeeksi rahaa.")
