@@ -36,7 +36,9 @@ def red_green_light_start():
             exit()
         else:
             slow_print("Tuo ei ollut yksi vaihtoehdoista. Yritä uudelleen.")
-            
+
+
+#red light, green light
 def red_green_light():
     global rngshot, lights_progress, games_reputation, contestants
     lights_progress = 0
@@ -277,4 +279,62 @@ def red_green_light():
                 exit()
             else:
                 slow_print("Tuo ei ollut yksi vaihtoehdoista. Yritä uudelleen.")
+
+#honeycomb
+
+def honeycomb():
+    global contestants, cookiediff
+    clear_screen()
+    stats_print()
+    slow_print("\nLäpäisit pelin!")
+    slow_print("Selviytyjiä oli "+ str(contestants)+"!")
+    slow_print("Yön jäkeen alkaa seuraava peli...")
+    slow_print("\nSeuraavassa pelissä teidän pitää valita muoto!")
+    slow_print("A: kolmio.")
+    slow_print("B: ympyrä.")
+    slow_print("C: sateenvarjo.")
+    slow_print("D: mona lisa.")
+    
+    while True:
+        cookie_choice = input("\n>> ").lower()
         
+        if cookie_choice == "a":
+            cookiediff = 0
+            break
+        elif cookie_choice == "b":
+            cookiediff = 1
+            break
+        elif cookie_choice == "c":
+            cookiediff = 3
+            break
+        elif cookie_choice == "d":
+            cookiediff = 100
+            break
+        else:
+            slow_print("Tuo ei ollut yksi vaihtoehdoista. Yritä uudelleen.")
+    
+    slow_print("Kuulet äänen.")
+    slow_print("Pelissä on tarkoitus kaivertaa dalgona hunaja-keksistä valitsemasi kuvio!")
+    slow_print("\nJos keksi hajoaa, häviät pelin!")
+    slow_print("A: nuole keksiä")
+    slow_print("B: älä nuole keksiä")
+    
+    while True:
+        cookie_choice = input("\n>> ").lower()
+        
+        if cookie_choice == "a":
+            slow_print("Nuolit keksiä!")
+            cookiediff -= 1
+            break
+        elif cookie_choice == "b":
+            slow_print("Et nuollut keksiä!")
+            break
+        else:
+            slow_print("Tuo ei ollut yksi vaihtoehdoista. Yritä uudelleen.")
+        randomsuccess = (random.randint(0,5))
+        slow_print("Aloit kaivertamaan keksiä!")
+        cookiesuccess = randomsuccess + cookiediff
+        if cookiesuccess > 4:
+            slow_print("Keksi hajosi! Hävisit pelin!")
+        elif cookiesuccess < 5:
+            slow_print("onnistuit!!!")
