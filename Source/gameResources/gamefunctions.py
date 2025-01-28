@@ -246,6 +246,7 @@ def place_kitchen():
     slow_print("\nOlet keittiössä. Näet edessäsi jääkaapin")
     slow_print("A: Avaa jääkaappi")
     slow_print("B: Poistu keittiöstä")
+    slow_print("C: Ota pöydältä veitsi")
     while True:
         kitchen_choice = input("\n>> ").lower()
         if kitchen_choice == "a":
@@ -256,6 +257,12 @@ def place_kitchen():
             slow_print("\nPoistut keittiöstä...")
             time.sleep(2)
             break
+        elif kitchen_choice == "c":
+            slow_print("\Hmm...")
+            time.sleep(2)
+            knife = True
+            break
+        
         else:
             slow_print("\nTuo ei ollut yksi vaihtoehdoista. Yritä uudelleen.")
 
