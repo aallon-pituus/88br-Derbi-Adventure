@@ -27,7 +27,7 @@ def start():
     while True:
         clear_screen()
         print(tab.logo())
-        print("Versio: Alpha-v0.1.0\n\n1. Aloita uusi peli\n2. Lue lisenssitiedot / Read license information\n3. Mitä lisättiin uudessa versiossa?\n\nSyötä numero: ")
+        print("Versio: Alpha-v0.1.2\n\n1. Aloita uusi peli\n2. Lue lisenssitiedot / Read license information\n3. Mitä lisättiin uudessa versiossa?\n\nSyötä numero: ")
         aloitus_valinta = input("\n>> ")
         if aloitus_valinta == "1":
             break
@@ -38,8 +38,8 @@ def start():
         elif aloitus_valinta == "2":
             clear_screen()
             print(tab.smaller())
-            lisenssi_valinta = input(">> ")
-            if lisenssi_valinta.lower() == "l":
+            lisenssi_valinta = input(">> ").lower()
+            if lisenssi_valinta == "l":
                 clear_screen()
                 print(tab.full())
                 input("\nPaina ENTER jatkaaksesi. Press ENTER to continue. ")
@@ -47,7 +47,7 @@ def start():
 
 # Aseta muuttujien arvo
 def setup():
-    global money, style, speed, derbilaatu, poliisi, hunger, in_bed, sanity, giffit, discord_ban, dark_web_access, kvk_ban, refrigerator_food, alibaba_parts, knife
+    global money, style, speed, derbilaatu, poliisi, hunger, in_bed, sanity, giffit, discord_ban, dark_web_access, kvk_ban, refrigerator_food, alibaba_parts, motonet_osat, motonetissä_käyty
     money = 10
     style = 0
     speed = 0
@@ -62,14 +62,18 @@ def setup():
     kvk_ban = False
     refrigerator_food = True
     alibaba_parts = False
-    knife = False
+    motonet_osat = "none"
+    motonetissä_käyty = False
 
+# Tarkista muuttujan arvo
 def check(variable):
     global dark_web_access, kvk_ban, discord_ban
     if variable == "dark_web_access":
         return dark_web_access
     if variable == "kvk_ban":
         return kvk_ban
+    if variable == "motonetissä_käyty":
+        return motonetissä_käyty
 
 # Tulosta pelaajan edistyminen
 def stats_print():
@@ -121,14 +125,28 @@ def place_bedroom():
 
 # Menit alakertaan
 def place_downstairs():
+    global motonetissä_käyty
     clear_screen()
     stats_print()
-    slow_print("\nNäet edessäsi keittiön, television ja oven takapihallesi.")
+    slow_print('\nNäet edessäsi keittiön, television ja oven takapihallesi.\nSeinällä on post-it lappu jossa lukee: "Osta uusia osia Motonetistä"')
     slow_print("A: Mene keittiöön")
     slow_print("B: Mene television äärelle")
     slow_print("C: Mene takapihalle")
-    slow_print("D: Mene takaisin yläkertaan")
+    slow_print("D: Mene etuovesta ulos")
+    slow_print("E: Mene takaisin yläkertaan")
+    reprint = False
     while True:
+        if reprint == True:
+            clear_screen()
+            stats_print()
+            slow_print('\nNäet edessäsi keittiön, television ja oven takapihallesi.\nSeinällä on post-it lappu jossa lukee: "Osta uusia osia Motonetistä"')
+            slow_print("A: Mene keittiöön")
+            slow_print("B: Mene television äärelle")
+            slow_print("C: Mene takapihalle")
+            slow_print("D: Mene etuovesta ulos")
+            slow_print("E: Mene takaisin yläkertaan")
+            reprint = False
+
         downstairs_choice = input("\n>> ").lower()
 
         if downstairs_choice == "a":
@@ -144,6 +162,32 @@ def place_downstairs():
             time.sleep(2)
             break
         elif downstairs_choice == "d":
+            slow_print("\nMenet etuovesta ulos...")
+            time.sleep(2)
+            clear_screen()
+            stats_print()
+            slow_print("\nMinne haluat mennä?")
+            if motonetissä_käyty == False:
+                slow_print("A: Motonet.")
+            slow_print("B: S-Market.")
+            slow_print("C: Palaa kotiin.")
+            while True:
+                outdoors_choice = input("\n>> ").lower()
+                if outdoors_choice == "a" and motonetissä_käyty == False:
+                    slow_print("\nMenet Motonettiin...")
+                    time.sleep(2)
+                    downstairs_choice = "x"
+                    return "motonet"
+                elif outdoors_choice == "b":
+                    slow_print("\nMenet S-Markettiin...")
+                    time.sleep(2)
+                    return "smarket"
+                elif outdoors_choice == "c":
+                    reprint = True
+                    break
+                else:
+                    slow_print("\nTuo ei ollut yksi vaihtoehdoista. Yritä uudelleen.")
+        elif downstairs_choice == "e":
             slow_print("\nPalaat yläkertaan...")
             time.sleep(2)
             break
@@ -178,6 +222,7 @@ def place_desk():
 ## Osio 3: Alakerta ##
 ######################
 
+# Menit television äärelle
 def item_tv():
     clear_screen()
     stats_print()
@@ -186,7 +231,7 @@ def item_tv():
     slow_print("A: Katso Top Gearia")
     slow_print("B: Poistu television ääreltä")
     while True:
-        tv_choice = input("\n>> ")
+        tv_choice = input("\n>> ").lower()
         if tv_choice == "a":
             slow_print("\nAudi RS8:n moottori irtoaa yhtäkkiä kuin taikatempusta ja lentää konepellin läpi kesken ajon.")
         elif tv_choice == "b":
@@ -194,6 +239,7 @@ def item_tv():
         else:
             slow_print("\nTuo ei ollut yksi vaihtoehdoista. Yritä uudelleen.")
 
+# Menit keittiöön
 def place_kitchen():
     clear_screen()
     stats_print()
@@ -202,7 +248,7 @@ def place_kitchen():
     slow_print("B: Poistu keittiöstä")
     slow_print("C: Ota pöydältä veitsi")
     while True:
-        kitchen_choice = input("\n>> ")
+        kitchen_choice = input("\n>> ").lower()
         if kitchen_choice == "a":
             slow_print("\nAvaat jääkaapin...")
             time.sleep(2)
@@ -222,6 +268,7 @@ def place_kitchen():
 
     return kitchen_choice
 
+# Menit jääkaapille
 def item_refrigerator():
     global hunger, refrigerator_food
     clear_screen()
@@ -233,7 +280,7 @@ def item_refrigerator():
         slow_print("\nJääkaapissa ei ole mitään.")
     slow_print("B: Sulje jääkaappi")
     while True:
-        refrigerator_choice = input("\n>> ")
+        refrigerator_choice = input("\n>> ").lower()
         if refrigerator_choice == "a" and refrigerator_food:
             clear_screen()
             stats_print()
@@ -418,7 +465,7 @@ def keulakulma_vihaajan_kellari():
             slow_print("\nTuo ei ollut yksi vaihtoehdoista. Yritä uudelleen.")
 
 
-#teletapit
+# Teletapit
 def teletapit():
     global poliisi, giffit, discord_ban
     clear_screen()
@@ -447,7 +494,7 @@ def teletapit():
         else:
             slow_print("\nTuo ei ollut yksi vaihtoehdoista. Yritä uudelleen.")
 
-
+# Oletko bännätty Discordista?
 def discord_banned():
     global discord_ban
     if discord_ban == True:
@@ -463,6 +510,7 @@ def discord_banned():
 ## Osio 6: Nettisivut ##
 ########################
 
+# Vieraile YouTubessa
 def site_youtube():
     global sanity
     clear_screen()
@@ -580,6 +628,7 @@ def tor_download():
         else:
             slow_print("\nTuo ei ollut yksi vaihtoehdoista. Yritä uudelleen.")
 
+# Avaa Tor-selain
 def dark_web():
     global tina_signup
     clear_screen
@@ -619,7 +668,7 @@ def dark_web():
         else:
             slow_print("\nTuo ei ollut yksi tuetuista osoitteista. Yritä uudelleen.")
 
-
+# Dark web suositut sivustot
 def hidden_wiki():
     clear_screen
     slow_print("\nNew York Times: 228w8wqeri93389298iwe98.onion")
@@ -633,15 +682,17 @@ def hidden_wiki():
 
 # Derbin osien valinta
 def derbi_osat():
-    global money, style, speed, derbilaatu
+    global money, style, speed, derbilaatu, motonet_osat, motonetissä_käyty
     clear_screen()
     stats_print()
     slow_print("\nNäet takapihallasi olevan derbin, mutta siitä puuttuu osia!")
     slow_print("A: Etsit osia kotoa.")
-    slow_print("B: Ostat uusia osia motonetistä. (5 rahaa)")
-    slow_print("C: Korjaa ilmastointiteipillä.")
+    slow_print("B: Korjaa ilmastointiteipillä.")
+    slow_print("C: Mene takaisin sisään")
+    if not motonet_osat == "none":
+        slow_print("D: Käytä Motonetistä ostamiasi osia")
     if alibaba_parts == True:
-        slow_print("D: Käytä Alibabasta ostamiasi osia. (2 rahaa)")
+        slow_print("E: Käytä Alibabasta ostamiasi osia.")
 
     while True:
         osat_choice = input("\n>> ").lower()
@@ -651,23 +702,24 @@ def derbi_osat():
             time.sleep(2)
             derbilaatu = +1
             break
-        elif osat_choice == "b" and money > 4:
-            slow_print("\nSaavuit motonettiin.")
-            time.sleep(2)
-            slow_print("\nValitse osat.")
-            slow_print("\n88BigRacing sylinteri 5 rahaa")
-            moto_osat = input("\n>> ")
-            break
-        elif osat_choice == "b" and money < 5:
-            slow_print("\nSinulla ei ole tarpeeksi rahaa.")
-        elif osat_choice == "c":
+        elif osat_choice == "b":
             slow_print("\nMitä odotit tapahtuvan?")
             time.sleep(2)
             speed -= 1
             style -= 2
             derbilaatu -= 1
             break
-        elif osat_choice == "d" and alibaba_parts == True:
+        elif osat_choice == "c":
+            slow_print("Kävelet takaisin sisään.")
+            time.sleep(2)
+            break
+        elif osat_choice == "d" and motonetissä_käyty == True:
+            slow_print("Käytit Motonetistä ostamiasi osia...")
+            if motonet_osat == "a":
+                speed += 2
+                derbilaatu += 2
+            break
+        elif osat_choice == "e" and alibaba_parts:
             slow_print('\n"Osta halvalla, säästä mahdollisesti myös laadusta."')
             time.sleep(2)
             derbilaatu += random.randint(-1, 2)
@@ -675,7 +727,8 @@ def derbi_osat():
             break
         else:
             slow_print("\nTuo ei ollut yksi vaihtoehdoista. Yritä uudelleen.")
-
+    
+    return osat_choice 
 
 # Derbin viritys
 def derbi_viritys():
@@ -704,9 +757,7 @@ def derbi_viritys():
         elif viritys_choice == "b" and money < 2:
             slow_print("\nSinulla ei ole tarpeeksi rahaa.")
         elif viritys_choice == "c" and money > 3:
-            slow_print(
-                "\nKatsot ympärillesi jännittyneenä. Toivot, että kukaan ei nähnyt virittelyjäsi..."
-            )
+            slow_print("\nKatsot ympärillesi jännittyneenä. Toivot, että kukaan ei nähnyt virittelyjäsi...")
             time.sleep(2)
             speed += 4
             style += 2
@@ -728,9 +779,7 @@ def derbi_ääni():
     slow_print("\nLaitetaanko päristely päälle?")
     slow_print("A: Turhaa semmoinen.")
     slow_print("B: Äänenvaimennin irti ja pärinä kuuluu.")
-    slow_print(
-        "C: Kyllä, ja kaiuttimet kaiken varaksi että kukaan ei saa unta! (2 rahaa)"
-    )
+    slow_print("C: Kyllä, ja kaiuttimet kaiken varaksi että kukaan ei saa unta! (2 rahaa)")
 
     while True:
         ääni_choice = input("\n>> ").lower()
@@ -755,3 +804,43 @@ def derbi_ääni():
             slow_print("\nSinulla ei ole tarpeeksi rahaa.")
         else:
             slow_print("\nTuo ei ollut yksi vaihtoehdoista. Yritä uudelleen.")
+
+######################
+## Osio 9: Kaupunki ##
+######################
+
+# S-Market
+def place_smarket():
+    clear_screen()
+    stats_print()
+    slow_print("Saavuit S-Markettiin! Mitä haluaisit ostaa?")
+    slow_print("A: En mitään. Palaa kotiin.")
+    # Tänne lisää vaihtoehtoja
+    while True:
+        smarket_choice = input("\n>> ").lower()
+        if smarket_choice == "a":
+            slow_print("\nKävelet takaisin kotiin...")
+            time.sleep(2)
+            break
+        else:
+            slow_print("\nTuo ei ollut yksi vaihtoehdoista. Yritä uudelleen.")
+
+# Motonet
+def place_motonet():
+        global speed, derbilaatu, motonet_osat, motonetissä_käyty
+        clear_screen()
+        stats_print()
+        slow_print("\nValitse osat.")
+        slow_print("\nA: 88BigRacing sylinteri (5 rahaa)")
+        while True:
+            motonet_choice = input("\n>> ").lower()
+            if motonet_choice == "a":
+                slow_print("\nNyt vetää kuin köyhä buffetissa!")
+                time.sleep(2)
+                slow_print("\nKävelet takaisin kotiin.")
+                time.sleep(2)
+                motonet_osat = "a"
+                motonetissä_käyty = True
+                break
+            else:
+                slow_print("\nTuo ei ollut yksi vaihtoehdoista. Yritä uudelleen.")

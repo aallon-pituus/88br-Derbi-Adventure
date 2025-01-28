@@ -1,14 +1,15 @@
 def new():
     return("""
+           
+=== VERSIO: Alpha-v0.1.2 ===
+           
 =====================
 MITÄ UUTTA LISÄTTIIN?
 =====================
-1. Discord lisättiin
-2. Keittiö
-3. Televisio
-4. Tor-selain lisättiin
-5. Nettisivut lisättiin
-6. Bugien korjauiksia
+1. Motonet
+2. S-Market (ei valmis)
+3. Ulko-ovi
+4. Buginkorjaukset
            
 Näiden lisäksi muita lisäyksiä!
            
